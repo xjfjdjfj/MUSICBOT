@@ -1,3 +1,4 @@
+aiohttp
 wget
 wheel
 psutil
