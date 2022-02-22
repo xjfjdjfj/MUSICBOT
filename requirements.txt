@@ -11,6 +11,7 @@ ffmpeg-python
 python-dotenv
 youtube_search
 youtube_search_python
+py-tgcalls==0.8.2
 pytgcalls==3.0.0.dev21
 git+https://github.com/LEGEND-AI/pyrogram
 git+https://github.com/LEGEND-AI/downloader
