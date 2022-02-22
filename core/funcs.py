@@ -2,41 +2,39 @@
 
 import os
 import re
+import math
+import time
 import random
-import asyncio
 import aiohttp
+import asyncio
 import aiofiles
 from config import config
 from core.song import Song
 from pytube import Playlist
-from pyrogram import Client
-from yt_dlp import YoutubeDL
+from spotipy import Spotify
+from core.groups import get_group
 from pyrogram.types import Message
-from pytgcalls import PyTgCalls, StreamType
 from PIL import Image, ImageDraw, ImageFont
-from core.groups import get_group, set_title
 from youtubesearchpython import VideosSearch
-from typing import Optional, Union, Tuple, AsyncIterator
-from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
-from pytgcalls.types.input_stream.quality import (
-    HighQualityAudio,
-    HighQualityVideo,
-    MediumQualityAudio,
-    MediumQualityVideo,
-    LowQualityAudio,
-    LowQualityVideo,
-)
+from typing import Tuple, Optional, AsyncIterator
+from spotipy.oauth2 import SpotifyClientCredentials
 
 
-legend = {}
-ydl_opts = {
-    "quiet": True,
-    "geo_bypass": True,
-    "nocheckcertificate": True,
-}
-ydl = YoutubeDL(ydl_opts)
-app = Client(config.SESSION, api_id=config.API_ID, api_hash=config.API_HASH)
-pytgcalls = PyTgCalls(app)
+
+try:
+    sp = Spotify(
+        client_credentials_manager=SpotifyClientCredentials(
+            config.SPOTIFY_CLIENT_ID, config.SPOTIFY_CLIENT_SECRET
+        )
+    )
+    config.SPOTIFY = True
+except BaseException:
+    print(
+        "WARNING: SPOTIFY_CLIENT_ID or SPOTIFY_CLIENT_SECRET is not set."
+        "Bot will work fine but playing songs with spotify playlist won't work."
+        "Check your configs or .env file if you want to add them or ask @AsmSupport!"
+    )
+    config.SPOTIFY = False
 
 
 themes = [
@@ -51,17 +49,26 @@ themes = [
 ]
 
 
-def search(message: Message) -> Optional[Song]:
+async def search(message: Message) -> Optional[Song]:
     query = ""
-    if message.reply_to_message:
-        if message.reply_to_message.audio:
-            query = message.reply_to_message.audio.title
-        elif message.reply_to_message.video:
-            query = message.reply_to_message.video.file_name
-        elif message.reply_to_message.document:
-            query = message.reply_to_message.document.file_name
-        else:
-            query = message.reply_to_message.text
+    reply = message.reply_to_message
+    if reply:
+        if reply.text:
+            query = reply.text
+        elif reply.media:
+            media = reply.audio or reply.video or reply.document
+            if not media:
+                return None
+            lel = await message.reply_text("`Trying To Download...`")
+            file = await reply.download(
+                progress=progress_bar,
+                progress_args=("Downloading...", lel, time.time()),
+            )
+            await lel.delete()
+            return Song(
+                {"title": media.file_name, "source": reply.link, "remote": file},
+                message,
+            )
     else:
         query = extract_args(message.text)
     if query == "":
@@ -69,13 +76,19 @@ def search(message: Message) -> Optional[Song]:
     is_yt_url, url = check_yt_url(query)
     if is_yt_url:
         return Song(url, message)
-    group = get_group(message.chat.id)
-    vs = VideosSearch(
-        query, limit=1, language=group["lang"], region=group["lang"]
-    ).result()
-    if len(vs["result"]) > 0 and vs["result"][0]["type"] == "video":
-        video = vs["result"][0]
-        return Song(video["link"], message)
+    elif config.SPOTIFY and "open.spotify.com/track" in query:
+        track_id = query.split("open.spotify.com/track/")[1].split("?")[0]
+        track = sp.track(track_id)
+        query = f'{" / ".join([artist["name"] for artist in track["artists"]])} - {track["name"]}'
+        return Song(query, message)
+    else:
+        group = get_group(message.chat.id)
+        vs = VideosSearch(
+            query, limit=1, language=group["lang"], region=group["lang"]
+        ).result()
+        if len(vs["result"]) > 0 and vs["result"][0]["type"] == "video":
+            video = vs["result"][0]
+            return Song(video["link"], message)
     return None
 
 
