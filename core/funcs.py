@@ -90,6 +90,18 @@ def check_yt_url(text: str) -> Tuple[bool, Optional[str]]:
     match = "".join(list(matches[0]))
     return True, match
 
+def check_yt_url(text: str) -> Tuple[bool, Optional[str]]:
+    pattern = re.compile(
+        "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)([a-zA-Z0-9-_]+)?$"
+    )
+    matches = re.findall(pattern, text)
+    if len(matches) <= 0:
+        return False, None
+
+    match = "".join(list(matches[0]))
+    return True, match
+
+
 
 def extract_args(text: str) -> str:
     if " " not in text:
@@ -98,39 +110,38 @@ def extract_args(text: str) -> str:
         return text.split(" ", 1)[1]
 
 
-def get_quality(song: Song) -> Union[AudioPiped, AudioVideoPiped]:
-    group = get_group(song.request_msg.chat.id)
-    if group["is_video"]:
-        if config.CUSTOM_QUALITY.lower() == "high":
-            return AudioVideoPiped(
-                song.remote_url, HighQualityAudio(), HighQualityVideo(), song.headers
-            )
-        elif config.CUSTOM_QUALITY.lower() == "medium":
-            return AudioVideoPiped(
-                song.remote_url,
-                MediumQualityAudio(),
-                MediumQualityVideo(),
-                song.headers,
-            )
-        elif config.CUSTOM_QUALITY.lower() == "low":
-            return AudioVideoPiped(
-                song.remote_url, LowQualityAudio(), LowQualityVideo(), song.headers
-            )
-        else:
-            print("Invalid Quality Specified. Defaulting to High!")
-            return AudioVideoPiped(
-                song.remote_url, HighQualityAudio(), HighQualityVideo(), song.headers
-            )
-    else:
-        if config.CUSTOM_QUALITY.lower() == "high":
-            return AudioPiped(song.remote_url, HighQualityAudio(), song.headers)
-        elif config.CUSTOM_QUALITY.lower() == "medium":
-            return AudioPiped(song.remote_url, MediumQualityAudio(), song.headers)
-        elif config.CUSTOM_QUALITY.lower() == "low":
-            return AudioPiped(song.remote_url, LowQualityAudio(), song.headers)
-        else:
-            print("Invalid Quality Specified. Defaulting to High!")
-            return AudioPiped(song.remote_url, HighQualityAudio(), song.headers)
+async def progress_bar(current, total, ud_type, msg, start):
+    now = time.time()
+    if total == 0:
+        return
+    if round((now - start) % 3) == 0 or current == total:
+        speed = current / (now - start)
+        percentage = current * 100 / total
+        time_to_complete = round(((total - current) / speed)) * 1000
+        time_to_complete = TimeFormatter(time_to_complete)
+        progressbar = "[{0}{1}]".format(
+            "".join(["▰" for i in range(math.floor(percentage / 10))]),
+            "".join(["▱" for i in range(10 - math.floor(percentage / 10))]),
+        )
+        current_message = f"**Downloading...** `{round(percentage, 2)}%`\n`{progressbar}`\n**Done**: `{humanbytes(current)}` | **Total**: `{humanbytes(total)}`\n**Speed**: `{humanbytes(speed)}/s` | **ETA**: `{time_to_complete}`"
+        if msg:
+            try:
+                await msg.edit(text=current_message)
+            except BaseException:
+                pass
+
+
+
+def humanbytes(size):
+    if not size:
+        return ""
+    power = 2**10
+    n = 0
+    Dic_powerN = {0: " ", 1: "K", 2: "M", 3: "G", 4: "T"}
+    while size > power:
+        size /= power
+        n += 1
+    return str(round(size, 2)) + " " + Dic_powerN[n] + "B"
 
 
 async def delete_messages(messages):
@@ -142,82 +153,20 @@ async def delete_messages(messages):
             except:
                 pass
 
+def TimeFormatter(milliseconds: int) -> str:
+    seconds, milliseconds = divmod(int(milliseconds), 1000)
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    days, hours = divmod(hours, 24)
+    tmp = (
+        ((str(days) + " Days, ") if days else "")
+        + ((str(hours) + " Hours, ") if hours else "")
+        + ((str(minutes) + " Min, ") if minutes else "")
+        + ((str(seconds) + " Sec, ") if seconds else "")
+        + ((str(milliseconds) + " MS, ") if milliseconds else "")
+    )
+    return tmp[:-2]
 
-async def skip_stream(song: Song, lang):
-    chat = song.request_msg.chat
-    if legend.get(chat.id) is not None:
-        try:
-            await legend[chat.id].delete()
-        except:
-            pass
-    infomsg = await song.request_msg.reply_text(lang["downloading"])
-    await pytgcalls.change_stream(
-        chat.id,
-        get_quality(song),
-    )
-    await set_title(chat.id, song.title, client=app)
-    thumb = await generate_cover(
-        song.title,
-        chat.title,
-        chat.id,
-        song.thumb,
-    )
-    legend[chat.id] = await song.request_msg.reply_photo(
-        photo=thumb,
-        caption=lang["playing"]
-        % (
-            song.title,
-            song.yt_url,
-            song.duration,
-            song.request_msg.chat.id,
-            song.requested_by.mention
-            if song.requested_by
-            else song.request_msg.sender_chat.title,
-        ),
-        quote=False,
-    )
-    await infomsg.delete()
-    if os.path.exists(thumb):
-        os.remove(thumb)
-
-
-async def start_stream(song: Song, lang):
-    chat = song.request_msg.chat
-    if legend.get(chat.id) is not None:
-        try:
-            await legend[chat.id].delete()
-        except:
-            pass
-    infomsg = await song.request_msg.reply_text(lang["downloading"])
-    await pytgcalls.join_group_call(
-        chat.id,
-        get_quality(song),
-        stream_type=StreamType().pulse_stream,
-    )
-    await set_title(chat.id, song.title, client=app)
-    thumb = await generate_cover(
-        song.title,
-        chat.title,
-        chat.id,
-        song.thumb,
-    )
-    legend[chat.id] = await song.request_msg.reply_photo(
-        photo=thumb,
-        caption=lang["playing"]
-        % (
-            song.title,
-            song.yt_url,
-            song.duration,
-            song.request_msg.chat.id,
-            song.requested_by.mention
-            if song.requested_by
-            else song.request_msg.sender_chat.title,
-        ),
-        quote=False,
-    )
-    await infomsg.delete()
-    if os.path.exists(thumb):
-        os.remove(thumb)
 
 
 def changeImageSize(maxWidth, maxHeight, image):
@@ -333,3 +282,25 @@ async def get_youtube_playlist(pl_url: str, message: Message) -> AsyncIterator[S
         song = Song(pl[i], message)
         song.title = pl.videos[i].title
         yield song
+
+
+async def get_spotify_playlist(pl_url: str, message: Message) -> AsyncIterator[Song]:
+    pl_id = re.split("[^a-zA-Z0-9]", pl_url.split("spotify.com/playlist/")[1])[0]
+    offset = 0
+    while True:
+        resp = sp.playlist_items(
+            pl_id, fields="items.track.name,items.track.artists.name", offset=offset
+        )
+        if len(resp["items"]) == 0:
+            break
+        for item in resp["items"]:
+            track = item["track"]
+            song_name = f'{",".join([artist["name"] for artist in track["artists"]])} - {track["name"]}'
+            vs = VideosSearch(song_name, limit=1).result()
+            if len(vs["result"]) > 0 and vs["result"][0]["type"] == "video":
+                video = vs["result"][0]
+                song = Song(video["link"], message)
+                song.title = video["title"]
+                yield song
+        offset += len(resp["items"])
+
