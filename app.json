@@ -1,8 +1,7 @@
 {
-    "name": "Legend Music Player",
+    "name": "Music Bot",
     "description": "A Telegram Music Bot written in Python using Pyrogram and Py-Tgcalls",
-    "repository": "https://github.com/LEGEND-OS/LEGEND-MUSIC",
-    "logo": "https://github.com/LEGEND-OS/LEGEND-MUSIC/raw/main/theme/logo.png",
+    "logo": "https://github.com/LEGEND-AI/LEGEND-MUSIC/raw/master/theme/logo.png",
     "stack": "container",
     "keywords": [
       "telegram",
@@ -13,7 +12,7 @@
       "python",
       "pyrogram",
       "py-tgcalls",
-      "musicplayer"
+      "LEGEND-MUSIC"
     ],
     "env": {
       "API_ID": {
@@ -24,28 +23,50 @@
         "description": "Telegram app hash, get it from https://my.telegram.org/apps",
         "required": true
       },
-      "PYROGRAM_SESSION": {
-        "description": "Pyrogram session string, get it from https://replit.com/@KrishnaJaiswal1/LEGENDBOT#main.py",
+      "BOT_TOKEN": {
+        "description": "Your telegram bot token, get it from https://t.me/botfather",
+        "required": false
+      },
+      "SESSION": {
+        "description": "Pyrogram session string",
         "required": true
       },
-      "SUDO_USERS": {
+      "SUDOERS": {
         "description": "ID of sudo users who have special access (separate multiple ids with space)",
         "required": false
       },
       "PREFIX": {
-        "description": "Bot commad prefix or handler (separate multiple prefix with space). By DefaultU Can Set <$>",
-        "value": "$",
-        "required": true 
+        "description": "Bot commad prefix or handler (separate multiple prefix with space)",
+        "value": "!",
+        "required": false
       },
       "LANGUAGE": {
         "description": "An available bot language (read the README.md for more info)",
         "value": "en",
         "required": false
       },
-      "CUSTOM_QUALITY": {
+      "QUALITY": {
         "description": "An available stream quality (read the README.md for more info)",
         "value": "high",
         "required": false
+      },
+      "STREAM_MODE": {
+        "description": "An stream mode like audio or video (read the README.md for more info)",
+        "value": "audio",
+        "required": false
+      },
+      "ADMIN_ONLY": {
+        "description": "Change it to 'True' if you want to make /play commands only for admins",
+        "value": "False",
+        "required": false
+      },
+      "SPOTIFY_CLIENT_ID": {
+          "description": "Spotify client id get it from https://developer.spotify.com/dashboard/applications",
+          "required": false
+      },
+      "SPOTIFY_CLIENT_SECRET": {
+          "description": "Spotify client secret get it from https://developer.spotify.com/dashboard/applications",
+          "required": false
       }
     },
     "formation": {

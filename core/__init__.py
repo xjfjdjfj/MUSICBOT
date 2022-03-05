@@ -1,25 +1,11 @@
-from core.funcs import (
-    app,
-    ydl,
-    search,
-    legend,
-    pytgcalls,
-    extract_args,
-    check_yt_url,
-    skip_stream,
-    start_stream,
-    generate_cover,
-    delete_messages,
-    get_youtube_playlist,
-)
-from core.groups import (
-    all_groups,
-    set_default,
-    get_group,
-    set_group,
-    set_title,
-    get_queue,
-    clear_queue,
-    shuffle_queue,
-)
+
+
 from core.song import Song
+from core.admins import is_sudo, is_admin
+from core.stream import app, ydl, sweetie, pytgcalls, skip_stream, start_stream
+from core.groups import (
+    get_group, get_queue, set_group, set_title, all_groups, clear_queue,
+    set_default, shuffle_queue)
+from core.funcs import (
+    search, check_yt_url, extract_args, generate_cover, delete_messages,
+    get_spotify_playlist, get_youtube_playlist)

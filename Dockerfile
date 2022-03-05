@@ -1,14 +1,19 @@
 FROM nikolaik/python-nodejs:python3.9-nodejs16
 
+# Updating Packages
 RUN apt update && apt upgrade -y
 RUN apt install git curl python3-pip ffmpeg -y
 
-RUN cd /
-RUN git clone https://github.com/LEGEND-AI/LEGEND-MUSIC
-RUN cd LEGEND-MUSIC
-WORKDIR /LEGEND-MUSIC
+# Copying Requirements
+COPY requirements.txt /requirements.txt
 
+# Installing Requirements
+RUN cd /
 RUN pip3 install --upgrade pip
 RUN pip3 install -U -r requirements.txt
+RUN mkdir /LEGEND-MUSIC
+WORKDIR /LEGEND-MUSIC
+COPY startup.sh /startup.sh
 
-CMD python3 main.py
+# Running Music Player Bot
+CMD ["/bin/bash", "/startup.sh"]

@@ -20,7 +20,6 @@ from typing import Tuple, Optional, AsyncIterator
 from spotipy.oauth2 import SpotifyClientCredentials
 
 
-
 try:
     sp = Spotify(
         client_credentials_manager=SpotifyClientCredentials(
@@ -32,7 +31,7 @@ except BaseException:
     print(
         "WARNING: SPOTIFY_CLIENT_ID or SPOTIFY_CLIENT_SECRET is not set."
         "Bot will work fine but playing songs with spotify playlist won't work."
-        "Check your configs or .env file if you want to add them or ask @AsmSupport!"
+        "Check your configs or .env file if you want to add them or ask @LegendBot_AI!"
     )
     config.SPOTIFY = False
 
@@ -94,17 +93,6 @@ async def search(message: Message) -> Optional[Song]:
 
 def check_yt_url(text: str) -> Tuple[bool, Optional[str]]:
     pattern = re.compile(
-        "^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)([a-zA-Z0-9-_]+)?$"
-    )
-    matches = re.findall(pattern, text)
-    if len(matches) <= 0:
-        return False, None
-
-    match = "".join(list(matches[0]))
-    return True, match
-
-def check_yt_url(text: str) -> Tuple[bool, Optional[str]]:
-    pattern = re.compile(
         "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)([a-zA-Z0-9-_]+)?$"
     )
     matches = re.findall(pattern, text)
@@ -113,7 +101,6 @@ def check_yt_url(text: str) -> Tuple[bool, Optional[str]]:
 
     match = "".join(list(matches[0]))
     return True, match
-
 
 
 def extract_args(text: str) -> str:
@@ -144,7 +131,6 @@ async def progress_bar(current, total, ud_type, msg, start):
                 pass
 
 
-
 def humanbytes(size):
     if not size:
         return ""
@@ -163,8 +149,9 @@ async def delete_messages(messages):
         if msg.chat.type == "supergroup":
             try:
                 await msg.delete()
-            except:
+            except BaseException:
                 pass
+
 
 def TimeFormatter(milliseconds: int) -> str:
     seconds, milliseconds = divmod(int(milliseconds), 1000)
@@ -179,7 +166,6 @@ def TimeFormatter(milliseconds: int) -> str:
         + ((str(milliseconds) + " MS, ") if milliseconds else "")
     )
     return tmp[:-2]
-
 
 
 def changeImageSize(maxWidth, maxHeight, image):
@@ -316,4 +302,3 @@ async def get_spotify_playlist(pl_url: str, message: Message) -> AsyncIterator[S
                 song.title = video["title"]
                 yield song
         offset += len(resp["items"])
-

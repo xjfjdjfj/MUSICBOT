@@ -1,16 +1,20 @@
 {
+    "update": "🔄 | **Updating...**",
+    "restart": "✅ | **Restarted!**",
     "downloading": "🔄 | **Processing...**",
     "errorMessage": "❌ | **An Error Occurred!**",
+    "notAllowed": "❌ | **You're Not Allowed!**",
     "invalidFile": "❌ | **Invalid Command/File!**",
     "langSet": "🗣 | **Language Set To `%s`!**",
-    "loopOff": "🔂 | **Music Loop Disabled!**",
-    "loopOn": "🔂 | **Music Loop Enabled!**",
+    "loopMode": "🔂 | **Loop Mode %s!**",
+    "adminsOnly": "👮 | **Admins Only Mode %s!**",
     "audioMode": "🎧 | **Audio Mode Enabled!**",
     "videoMode": "🎥 | **Video Mode Enabled!**",
-    "notFound": "❌ | **Not Found, Try Again!**",
+    "notFound": "❌ | **Noting Found, Try Again!**",
     "notActive": "❌ | **No Active Group Call!**",
     "notPlaying": "❌ | **Nothing Is Playing!**",
-    "playing": "▶️ **[%s](%s)\n⏱ Duration: `%s`\n💬 Playing On: `%s`\n🎧 Requested By: %s**",
+    "spotifyNotEnabled": "❌ | **Spotify Is Not Enabled!**",
+    "playing": "▶️ **[%s](%s)**\n⏱ **Duration:** `%s`\n💬 **Playing On:** `%s`\n🎧 **Requested By:** %s",
     "paused": "⏸ | **Paused Stream!**",
     "resumed": "▶️ | **Resumed Stream!**",
     "muted": "🔇 | **Muted Stream!**",
@@ -21,5 +25,6 @@
     "queueImported": "✅ | **%d Songs Imported!**",
     "replyToAFile": "👀 | **Reply To An Audio/Video!**",
     "addedToQueue": "➕ | **[%s](%s) Is Queued In Position %d**!",
-    "helpText": "👨‍💻 **Total Available Commands:**\n\n• <prefix>ping (all)\n- `check if alive or not`\n\n• <prefix>repo \n- `show the bot source code(all)`\n\n• <prefix>start | <prefix>help\n- `show the help for commands(owner/sudo)`\n\n• <prefix>mode | <prefix>switch\n- `switch the stream mode (audio/video)(owner/sudo)`\n\n• <prefix>p | <prefix>play [song name | youtube link]\n- `play a song in vc, if already playing add to queue(owner/sudo)`\n\n• <prefix>radio | <prefix>stream [radio url | stream link]\n- `play a live stream in vc, if already playing add to queue(owner/sudo)`\n\n• <prefix>pl | <prefix>playlist [youtube playlist link]\n- `play the whole youtube playlist at once(all)`\n\n• <prefix>skip | <prefix>next\n- `skip to the next song(owner)`\n\n• <prefix>m | <prefix>mute\n- `mute the current stream(owner/sudo)`\n\n• <prefix>um | <prefix>unmute\n- `unmute the muted stream(owner/sudo)`\n\n• <prefix>ps | <prefix>pause\n- `pause the current stream(owner/sudo)`\n\n• <prefix>rs | <prefix>resume\n- `resume the paused stream(sudo/users)`\n\n• <prefix>list | <prefix>queue\n- `show the songs in the queue`\n\n• <prefix>mix | <prefix>shuffle\n- `shuffle the queued playlist(owner/sudo)`\n\n• <prefix>loop | <prefix>repeat\n- `enable or disable the loop mode(owner/sudo)`\n\n• <prefix>lang | language [language code]\n- `set the bot language in a group(owner/sudo)`\n\n• <prefix>ip | <prefix>import\n- `import queue from exported file(all)`\n\n• <prefix>ep | <prefix>export\n- `export the queue for import in future(all)`\n\n• <prefix>stop | <prefix>leave\n- `leave from vc and clear the queue(owner/sudo)`\n\n**Support ~** @Legend_K_Userbot"
+    "startText": "👋🏻 **Hello %s**,\n\nThis is Telegram **Music Player**\nI Can Stream **Lives**, **Radios**, **YouTube Videos**, Telegram **Audio & Video Files** On Voice Chat Of Telegram Groups. Let's Enjoy The **Cinematic View** Of Music Player With Your Friends 😉!\n\n**Made With ❤️ By @Legendboy_XD!** 👑",
+    "helpText": "🤖 **Available Commands:**\n\n• <prefix>ping\nUsage: `check if alive or not`\n\n• <prefix>repo\nUsage: `show the bot source code`\n\n• <prefix>start | <prefix>help\nUsage: `show the help for commands`\n\n• <prefix>mode | <prefix>switch\nUsage: `switch the stream mode (audio/video)`\n\n• <prefix>p | <prefix>play [song name | youtube link]\nUsage: `play a song in vc, if already playing add to queue`\n\n• <prefix>radio | <prefix>stream [radio url | stream link]\nUsage: `play a live stream in vc, if already playing add to queue`\n\n• <prefix>pl | <prefix>playlist [youtube playlist link]\nUsage: `play the whole youtube playlist at once`\n\n• <prefix>skip | <prefix>next\nUsage: `skip to the next song`\n\n• <prefix>m | <prefix>mute\nUsage: `mute the current stream`\n\n• <prefix>um | <prefix>unmute\nUsage: `unmute the muted stream`\n\n• <prefix>ps | <prefix>pause\nUsage: `pause the current stream`\n\n• <prefix>rs | <prefix>resume\nUsage: `resume the paused stream`\n\n• <prefix>list | <prefix>queue\nUsage: `show the songs in the queue`\n\n• <prefix>mix | <prefix>shuffle\nUsage: `shuffle the queued playlist`\n\n• <prefix>loop | <prefix>repeat\nUsage: `enable or disable the loop mode`\n\n• <prefix>lang | language [language code]\nUsage: `set the bot language in a group`\n\n• <prefix>ip | <prefix>import\nUsage: `import queue from exported file`\n\n• <prefix>ep | <prefix>export\nUsage: `export the queue for import in future`\n\n• <prefix>stop | <prefix>leave\nUsage: `leave from vc and clear the queue`\n\n• <prefix>restart | <prefix>update\nUsage: `restart and update your music player`\n\n© **Powered By: @Legendbot_AI | @Legendboy_XD**"
 }
