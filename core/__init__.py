@@ -1,5 +1,3 @@
-
-
 from core.song import Song
 from core.admins import is_sudo, is_admin
 from core.stream import app, ydl, sweetie, pytgcalls, skip_stream, start_stream
