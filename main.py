@@ -1,4 +1,3 @@
-#
 
 import os
 import json
@@ -8,6 +7,8 @@ from core.song import Song
 from pyrogram.types import Message
 from pytgcalls.types import Update
 from pyrogram import Client, filters
+from pytgcalls import StreamType
+from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls.exceptions import GroupCallNotFound, NoActiveGroupCall
 from pytgcalls.types.stream import StreamAudioEnded, StreamVideoEnded
 from core.decorators import language, register, only_admins, handle_error
@@ -18,6 +19,7 @@ from core import (
     get_spotify_playlist, get_youtube_playlist)
 
 
+from core.vcquque import adds_to_quque, gets_quequ, pops_an_item, clears_quque
 REPO = """
 👨‍💻**Legend Music Player**👨‍💻
 - Repo: [GitHub](https://github.com/LEGEND-AI/LEGEND-MUSIC)
@@ -68,6 +70,41 @@ async def start(_, message: Message, lang):
 @handle_error
 async def help(_, message: Message, lang):
     await message.reply_text(lang["helpText"].replace("<prefix>", config.PREFIXES[0]))
+
+
+
+@client.on_message(
+    filters.command(["vcraid"], config.PREFIXES) & ~filters.private & ~filters.edited
+)
+@register
+@language
+@handle_error
+async def play_stream(_, message: Message, lang):
+    chat_id = message.chat.id
+    group = get_group(chat_id)
+    if group["admins_only"]:
+        check = await is_admin(message)
+        if not check:
+            k = await message.reply_text(lang["notAllowed"])
+            return await delete_messages([message, k])
+        aud = choice(aud_list)
+        LEGENDXD = await e.reply_text("**Starting VC raid**")
+        link = f"https://itshellboy.tk/{aud[1:]}"
+        dl = aud
+        songname = aud[18:]
+        if chat_id in QUEUE:
+            pos = adds_to_queue(chat_id, songname, dl, link, "Audio", 0)
+            await LEGENDXD.delete()
+            await message.reply_text(f"**> Raiding in:** {chat_.title} \n\n**> Audio:** {songname} \n**> Position:** #{pos}")
+        else:
+            if pytgcalls:
+                await pytgcalls.join_group_call(chat_id, AudioPiped(dl), stream_type=StreamType().pulse_stream)
+            adds_to_queue(chat_id, songname, dl, link, "Audio", 0)
+            await LEGENDXD.delete()
+            await message.reply_text(f"**> Raiding \n\n**> Audio:** {songname} \n**> Position:** Ongoing Raid")
+
+
+
 
 
 @client.on_message(
