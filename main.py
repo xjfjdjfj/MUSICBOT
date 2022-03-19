@@ -11,7 +11,7 @@ from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls.exceptions import GroupCallNotFound, NoActiveGroupCall
 from pytgcalls.types.stream import StreamAudioEnded, StreamVideoEnded
 from core.decorators import language, register, only_admins, handle_error
-from core.vcquque import gets_queue, clears_quque, pops_an_item, adds_to_quque
+from core.vcquque import gets_queue, clears_queue, pops_an_item, adds_to_quque
 from core import (
     app, ydl, search, is_sudo, sweetie, is_admin, get_group, get_queue,
     pytgcalls, set_group, set_title, all_groups, clear_queue, skip_stream,
