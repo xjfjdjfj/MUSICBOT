@@ -11,7 +11,6 @@ from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls.exceptions import GroupCallNotFound, NoActiveGroupCall
 from pytgcalls.types.stream import StreamAudioEnded, StreamVideoEnded
 from core.decorators import language, register, only_admins, handle_error
-from core.vcquque import gets_queue, clears_queue, pops_an_item, adds_to_queue
 from core import (
     app, ydl, search, is_sudo, sweetie, is_admin, get_group, get_queue,
     pytgcalls, set_group, set_title, all_groups, clear_queue, skip_stream,
@@ -70,42 +69,6 @@ async def start(_, message: Message, lang):
 async def help(_, message: Message, lang):
     await message.reply_text(lang["helpText"].replace("<prefix>", config.PREFIXES[0]))
 
-
-@client.on_message(
-    filters.command(["vcraid"], config.PREFIXES) & ~filters.private & ~filters.edited
-)
-@register
-@language
-@handle_error
-async def play_stream(_, message: Message, lang):
-    chat_id = message.chat.id
-    group = get_group(chat_id)
-    if group["admins_only"]:
-        check = await is_admin(message)
-        if not check:
-            k = await message.reply_text(lang["notAllowed"])
-            return await delete_messages([message, k])
-        aud = choice(aud_list)
-        LEGENDXD = await e.reply_text("**Starting VC raid**")
-        link = f"https://itshellboy.tk/{aud[1:]}"
-        dl = aud
-        songname = aud[18:]
-        if chat_id in QUEUE:
-            pos = adds_to_queue(chat_id, songname, dl, link, "Audio", 0)
-            await LEGENDXD.delete()
-            await message.reply_text(
-                f"**> Raiding in:** {chat_.title} \n\n**> Audio:** {songname} \n**> Position:** #{pos}"
-            )
-        else:
-            if pytgcalls:
-                await pytgcalls.join_group_call(
-                    chat_id, AudioPiped(dl), stream_type=StreamType().pulse_stream
-                )
-            adds_to_queue(chat_id, songname, dl, link, "Audio", 0)
-            await LEGENDXD.delete()
-            await message.reply_text(
-                f"**> Raiding \n\n**> Audio:** {songname} \n**> Position:** Ongoing Raid"
-            )
 
 
 @client.on_message(
