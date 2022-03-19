@@ -70,7 +70,6 @@ async def help(_, message: Message, lang):
     await message.reply_text(lang["helpText"].replace("<prefix>", config.PREFIXES[0]))
 
 
-
 @client.on_message(
     filters.command(["p", "play"], config.PREFIXES) & ~filters.private & ~filters.edited
 )
