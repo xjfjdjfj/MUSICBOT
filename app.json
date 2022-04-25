@@ -23,10 +23,6 @@
         "description": "Telegram app hash, get it from https://my.telegram.org/apps",
         "required": true
       },
-      "BOT_TOKEN": {
-        "description": "Your telegram bot token, get it from https://t.me/botfather",
-        "required": false
-      },
       "SESSION": {
         "description": "Pyrogram session string",
         "required": true
