@@ -37,17 +37,17 @@
         "required": false
       },
       "LANGUAGE": {
-        "description": "An available bot language (read the README.md for more info)",
+        "description": "An available bot language (DO NOT CHANGE)",
         "value": "en",
         "required": false
       },
       "QUALITY": {
-        "description": "An available stream quality (read the README.md for more info)",
+        "description": "An available stream quality...Fill 'high', 'low' or 'medium' As Per Your Needs.",
         "value": "high",
         "required": false
       },
       "STREAM_MODE": {
-        "description": "An stream mode like audio or video (read the README.md for more info)",
+        "description": "A Stream Mode For Your Bot...Fill 'audio' or 'video' In It.",
         "value": "audio",
         "required": false
       },
@@ -57,11 +57,11 @@
         "required": false
       },
       "SPOTIFY_CLIENT_ID": {
-          "description": "Spotify client id get it from https://developer.spotify.com/dashboard/applications",
+          "description": "Spotify client id get it from https://developer.spotify.com/dashboard/applications...IF YOU DONT KNOW WHAT IS THIS...SO LEAVE IT BLANK",
           "required": false
       },
       "SPOTIFY_CLIENT_SECRET": {
-          "description": "Spotify client secret get it from https://developer.spotify.com/dashboard/applications",
+          "description": "Spotify client secret get it from https://developer.spotify.com/dashboard/applications...IF YOU DONT KNOW WHAT IS THIS...SO LEAVE IT BLANK",
           "required": false
       }
     },
