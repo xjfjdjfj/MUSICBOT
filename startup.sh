@@ -5,6 +5,7 @@ cd /LEGEND-MUSIC
 pip3 install -U -r requirements.txt
 echo ">> STARTING MUSIC PLAYER USERBOT..."
 clear
+python3 runfile.py
 echo "
 #     #                        
 ##   ## #    #  ####  #  ####  
@@ -16,4 +17,3 @@ echo "
                                                                           
 MUSIC PLAYER USERBOT IS SUCCESSFULLY DEPLOYED!
 "
-python3 main.py
