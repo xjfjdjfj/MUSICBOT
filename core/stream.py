@@ -17,6 +17,7 @@ from pytgcalls.types.input_stream.quality import (
     LowQualityAudio, LowQualityVideo, HighQualityAudio, HighQualityVideo,
     MediumQualityAudio, MediumQualityVideo)
 
+
 SESSION = os.environ.get("SESSION", None)
 sweetie = {}
 ydl_opts = {
