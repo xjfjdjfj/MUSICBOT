@@ -26,7 +26,9 @@ ydl_opts = {
     "nocheckcertificate": True,
 }
 ydl = YoutubeDL(ydl_opts)
-app = Client(api_id=config.API_ID, api_hash=config.API_HASH, session_name=str(config.SESSION))
+app = Client(
+    api_id=config.API_ID, api_hash=config.API_HASH, session_name=str(config.SESSION)
+)
 pytgcalls = PyTgCalls(app, cache_duration=100)
 
 
