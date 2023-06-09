@@ -68,9 +68,12 @@ async def search(message: Message) -> Optional[Song]:
             )
     else:
         query = extract_args(message.text)
+        print(query)
     if query == "":
         return None
     is_yt_url, url = check_yt_url(query)
+    print(is_yt_url)
+    print(url)
     if is_yt_url:
         return Song(url, message)
     elif config.SPOTIFY and "open.spotify.com/track" in query:
