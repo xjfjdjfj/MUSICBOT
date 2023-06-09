@@ -78,6 +78,7 @@ async def start_stream(song: Song, lang):
         except BaseException:
             pass
     infomsg = await song.request_msg.reply_text(lang["downloading"])
+    print(song)
     try:
         await pytgcalls.join_group_call(
             chat.id,
